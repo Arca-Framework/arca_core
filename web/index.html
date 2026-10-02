@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- notify -->
+    <div id="notify-top-right" class="notify-stack top-right"></div>
+    <div id="notify-top-left" class="notify-stack top-left"></div>
+    <div id="notify-top" class="notify-stack top"></div>
+    <div id="notify-bottom-right" class="notify-stack bottom-right"></div>
+    <div id="notify-bottom-left" class="notify-stack bottom-left"></div>
+    <div id="notify-bottom" class="notify-stack bottom"></div>
+
+    <!-- progress -->
+    <div id="progress" class="hidden">
+        <div class="progress-label"></div>
+        <div class="progress-track"><div class="progress-fill"></div></div>
+    </div>
+
+    <!-- text ui -->
+    <div id="textui" class="hidden"></div>
+
+    <!-- context -->
+    <div id="context" class="hidden">
+        <div class="context-header">
+            <button class="context-btn" id="context-back"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="context-title"></div>
+            <button class="context-btn" id="context-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="context-options"></div>
+    </div>
+
+    <!-- radial -->
+    <div id="radial" class="hidden">
+        <div class="radial-ring"></div>
+        <button class="radial-center"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
