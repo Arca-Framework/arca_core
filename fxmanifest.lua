@@ -27,6 +27,7 @@ client_scripts {
     'client/main.lua',
     'client/events.lua',
     'client/commands.lua',
+    'client/jobs.lua',
     'bridge/qb/client.lua',
 }
 
@@ -38,6 +39,7 @@ server_scripts {
     'server/player.lua',
     'server/events.lua',
     'server/commands.lua',
+    'server/jobs.lua',
     'bridge/qb/server.lua',
 }
 

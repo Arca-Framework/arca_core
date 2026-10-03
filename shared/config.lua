@@ -27,6 +27,13 @@ ArcaConfig.Player = {
     },
 }
 
+-- Multi-job: characters hold several jobs and switch between them (/jobs, /duty)
+ArcaConfig.Jobs = {
+    MaxJobs = 3,                -- jobs one character can hold (unemployed doesn't count)
+    DutyOnSwitch = false,       -- go on duty straight away when switching jobs
+    RespectDefaultDuty = true,  -- ...unless the job has defaultDuty = true
+}
+
 -- Compatibility layers so resources written for other frameworks run on Arca.
 -- qb: arca_core also answers as 'qb-core' (exports['qb-core'], QBCore events, Player.Functions, ...)
 ArcaConfig.Bridge = {
@@ -46,6 +53,6 @@ ArcaConfig.Radial = {
 }
 
 ArcaConfig.Notify = {
-    Position = 'top-right',
+    Position = 'top-left',
     Duration = 5000,
 }
