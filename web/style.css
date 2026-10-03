@@ -113,3 +113,17 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } }
 @keyframes fadeOut { to { opacity: 0; transform: translateX(10px); } }
 @keyframes pop { from { opacity: 0; transform: scale(0.9); } }
+
+/* ---------- coords editor ---------- */
+#coords {
+    position: absolute; top: 50%; right: 20px; transform: translateY(-50%); width: 270px;
+    background: var(--bg); border-radius: 10px; padding: 14px 16px; border-left: 3px solid var(--accent);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .4); font-size: 13px;
+}
+.coords-head { font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.coords-head i { color: var(--accent); }
+#coords-lock { margin-left: auto; font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #ff5468; }
+.coords-grid { display: grid; grid-template-columns: 24px 1fr; gap: 4px 8px; font-family: Consolas, monospace; font-size: 14px; margin-bottom: 12px; }
+.coords-grid span { color: var(--muted); font-weight: 700; }
+.coords-keys { display: grid; gap: 5px; color: var(--muted); font-size: 12px; }
+.coords-keys kbd { display: inline-block; min-width: 20px; padding: 0 5px; margin-right: 2px; border-radius: 4px; background: var(--bg-hover); color: var(--text); font-family: inherit; font-size: 11px; text-align: center; }

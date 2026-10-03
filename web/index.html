@@ -33,6 +33,25 @@
         <div class="context-options"></div>
     </div>
 
+    <!-- coords editor -->
+    <div id="coords" class="hidden">
+        <div class="coords-head"><i class="fa-solid fa-location-crosshairs"></i> Coords editor <span id="coords-lock"></span></div>
+        <div class="coords-grid">
+            <span>X</span><b id="cx">0</b>
+            <span>Y</span><b id="cy">0</b>
+            <span>Z</span><b id="cz">0</b>
+            <span>H</span><b id="ch">0</b>
+        </div>
+        <div class="coords-keys">
+            <div><kbd>LMB</kbd> lock point</div>
+            <div><kbd>&uarr;</kbd><kbd>&darr;</kbd> height</div>
+            <div><kbd>&larr;</kbd><kbd>&rarr;</kbd> heading</div>
+            <div><kbd>Shift</kbd> fine adjust</div>
+            <div><kbd>E</kbd> vector3 &middot; <kbd>G</kbd> vector4 &middot; <kbd>H</kbd> vector2</div>
+            <div><kbd>Backspace</kbd> close</div>
+        </div>
+    </div>
+
     <!-- radial -->
     <div id="radial" class="hidden">
         <div class="radial-ring"></div>

@@ -25,6 +25,7 @@ client_scripts {
     'modules/radial/client.lua',
     'client/main.lua',
     'client/events.lua',
+    'client/commands.lua',
     'bridge/qb/client.lua',
 }
 

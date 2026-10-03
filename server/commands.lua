@@ -76,4 +76,55 @@ Arca.Commands.Add('logout', 'Return to character selection', 'admin', function(s
     Arca.Player.Logout(source)
 end)
 
+---------------------------------------------------------------------
+-- Admin / dev tools (the work happens client-side in client/commands.lua)
+---------------------------------------------------------------------
+local function inGame(source)
+    if source == 0 then print('This command can only be used in game') return false end
+    return true
+end
+
+Arca.Commands.Add('fix', 'Repair the vehicle you are in', 'admin', function(source)
+    if inGame(source) then TriggerClientEvent('arca_core:client:fixVehicle', source) end
+end)
+
+Arca.Commands.Add('tpm', 'Teleport to your map waypoint', 'admin', function(source)
+    if inGame(source) then TriggerClientEvent('arca_core:client:tpm', source) end
+end)
+
+Arca.Commands.Add('car', 'Spawn a vehicle: /car model', 'admin', function(source, args)
+    if not inGame(source) then return end
+    local model = args[1]
+    if not model or not model:match('^[%w_]+$') then
+        return reply(source, 'Usage: /car model', 'error')
+    end
+    TriggerClientEvent('arca_core:client:spawnVehicle', source, model:lower())
+end)
+
+Arca.Commands.Add('tp', 'Teleport: /tp id or /tp x y z', 'admin', function(source, args)
+    if not inGame(source) then return end
+    -- accepts "x y z" or a pasted "x, y, z"
+    local function num(s) return tonumber(((s or ''):gsub(',', ''))) end
+    local x, y, z = num(args[1]), num(args[2]), num(args[3])
+    if x and y and z then
+        return TriggerClientEvent('arca_core:client:teleport', source, vector3(x, y, z))
+    end
+    local target = tonumber(args[1])
+    local ped = target and GetPlayerPed(tostring(target))
+    if not ped or ped == 0 then
+        return reply(source, 'Usage: /tp id or /tp x y z', 'error')
+    end
+    TriggerClientEvent('arca_core:client:teleport', source, GetEntityCoords(ped))
+end)
+
+for _, kind in ipairs({ 'vector2', 'vector3', 'vector4' }) do
+    Arca.Commands.Add(kind, ('Copy your position as a %s'):format(kind), 'admin', function(source)
+        if inGame(source) then TriggerClientEvent('arca_core:client:copyCoords', source, kind) end
+    end)
+end
+
+Arca.Commands.Add('coords', 'Toggle the coords editor', 'admin', function(source)
+    if inGame(source) then TriggerClientEvent('arca_core:client:coordsEditor', source) end
+end)
+
 exports('AddCommand', Arca.Commands.Add)

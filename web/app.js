@@ -115,6 +115,28 @@ function radialShow({ items, sub }) {
 radialCenter.addEventListener('click', () => post('radial:back'));
 radial.addEventListener('contextmenu', (e) => { e.preventDefault(); post('radial:back'); });
 
+/* ---------- clipboard ---------- */
+function copyText(text) {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    area.remove();
+}
+
+/* ---------- coords editor ---------- */
+function coordsShow(d) {
+    $('#coords').classList.remove('hidden');
+    $('#cx').textContent = d.x;
+    $('#cy').textContent = d.y;
+    $('#cz').textContent = d.z;
+    $('#ch').textContent = d.h;
+    $('#coords-lock').textContent = d.locked ? 'LOCKED' : '';
+}
+
 /* ---------- router ---------- */
 window.addEventListener('message', ({ data }) => {
     switch (data.action) {
@@ -127,6 +149,9 @@ window.addEventListener('message', ({ data }) => {
         case 'contextHide': context.classList.add('hidden'); break;
         case 'radial': radialShow(data.data); break;
         case 'radialHide': radial.classList.add('hidden'); break;
+        case 'copy': copyText(data.data); break;
+        case 'coords': coordsShow(data.data); break;
+        case 'coordsHide': $('#coords').classList.add('hidden'); break;
     }
 });
 
