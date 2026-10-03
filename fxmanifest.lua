@@ -12,6 +12,7 @@ shared_scripts {
     'shared/main.lua',
     'shared/jobs.lua',
     'shared/gangs.lua',
+    'shared/small.lua',
     'bridge/qb/shared.lua',
 }
 
