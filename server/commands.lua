@@ -101,7 +101,48 @@ Arca.Commands.Add('car', 'Spawn a vehicle: /car model', 'admin', function(source
     TriggerClientEvent('arca_core:client:spawnVehicle', source, model:lower())
 end)
 
-Arca.Commands.Add('tp', 'Teleport: /tp id or /tp x y z', 'admin', function(source, args)
+local function hasOtherPlayers(veh, self)
+    for seat = -1, 6 do
+        local occupant = GetPedInVehicleSeat(veh, seat)
+        if occupant ~= 0 and occupant ~= self and IsPedAPlayer(occupant) then return true end
+    end
+    return false
+end
+
+Arca.Commands.Add('dv', 'Delete vehicle: /dv (yours or nearest) or /dv radius', 'admin', function(source, args)
+    if not inGame(source) then return end
+    local ped = GetPlayerPed(tostring(source))
+    local pos = GetEntityCoords(ped)
+    local radius = tonumber(args[1])
+
+    if not radius then
+        -- the vehicle you're in, otherwise the closest one within 5m
+        local veh = GetVehiclePedIsIn(ped, false)
+        if veh == 0 then
+            local best = 5.0
+            for _, v in ipairs(GetAllVehicles()) do
+                local dist = #(pos - GetEntityCoords(v))
+                if dist < best then veh, best = v, dist end
+            end
+        end
+        if veh == 0 then return reply(source, 'No vehicle nearby', 'error') end
+        if hasOtherPlayers(veh, ped) then return reply(source, 'Someone else is in that vehicle', 'error') end
+        DeleteEntity(veh)
+        return reply(source, 'Vehicle deleted', 'success')
+    end
+
+    radius = math.min(math.max(radius, 1.0), 100.0)
+    local count = 0
+    for _, v in ipairs(GetAllVehicles()) do
+        if #(pos - GetEntityCoords(v)) <= radius and not hasOtherPlayers(v, ped) then
+            DeleteEntity(v)
+            count = count + 1
+        end
+    end
+    reply(source, ('Deleted %d vehicle%s within %dm'):format(count, count == 1 and '' or 's', math.floor(radius)), 'success')
+end)
+
+Arca.Commands.Add('tp','Teleport: /tp id or /tp x y z', 'admin', function(source, args)
     if not inGame(source) then return end
     -- accepts "x y z" or a pasted "x, y, z"
     local function num(s) return tonumber(((s or ''):gsub(',', ''))) end
