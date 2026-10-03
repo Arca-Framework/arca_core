@@ -55,9 +55,21 @@ function Arca.Functions.HasPermission(source, perm)
 end
 
 ---Register a usable item handler (consumed by arca_inventory)
-local usableItems = {}
-function Arca.Functions.CreateUseableItem(item, fn) usableItems[item] = fn end
+local usableItems = {}   -- [item] = handler
+local usableOwner = {}   -- [item] = resource that registered it
+function Arca.Functions.CreateUseableItem(item, fn)
+    usableItems[item] = fn
+    usableOwner[item] = GetInvokingResource() or GetCurrentResourceName()
+end
 function Arca.Functions.CanUseItem(item) return usableItems[item] end
+
+-- a stopped resource's handlers can't be called any more: forget them
+-- (they're registered again when the resource starts)
+AddEventHandler('onResourceStop', function(resource)
+    for item, owner in pairs(usableOwner) do
+        if owner == resource then usableItems[item], usableOwner[item] = nil, nil end
+    end
+end)
 
 function Arca.Functions.AddJob(name, data) Arca.Shared.Jobs[name] = data end
 function Arca.Functions.AddGang(name, data) Arca.Shared.Gangs[name] = data end
