@@ -60,3 +60,40 @@ end)
 CreateThread(function()
     Arca.AddRadialItem({ id = 'arca_jobs', label = 'Jobs', icon = 'fa-solid fa-briefcase', onSelect = openJobs })
 end)
+
+---------------------------------------------------------------------
+-- Vehicle controls in the radial menu
+---------------------------------------------------------------------
+local function myVehicle()
+    local veh = GetVehiclePedIsIn(PlayerPedId(), false)
+    if veh == 0 then Arca.Notify('You\'re not in a vehicle', 'error') return nil end
+    return veh
+end
+
+local function toggleDoor(door)
+    local veh = myVehicle()
+    if not veh then return end
+    if GetVehicleDoorAngleRatio(veh, door) > 0.1 then SetVehicleDoorShut(veh, door, false) else SetVehicleDoorOpen(veh, door, false, false) end
+end
+
+local windowsDown = false
+
+CreateThread(function()
+    Arca.RegisterRadial({ id = 'arca_vehicle', items = {
+        { id = 'veh_engine', label = 'Engine', icon = 'fa-solid fa-power-off', keepOpen = true, onSelect = function()
+            local veh = myVehicle()
+            if veh then SetVehicleEngineOn(veh, not GetIsVehicleEngineRunning(veh), false, true) end
+        end },
+        { id = 'veh_hood', label = 'Hood', icon = 'fa-solid fa-car-side', keepOpen = true, onSelect = function() toggleDoor(4) end },
+        { id = 'veh_trunk', label = 'Trunk', icon = 'fa-solid fa-car-rear', keepOpen = true, onSelect = function() toggleDoor(5) end },
+        { id = 'veh_windows', label = 'Windows', icon = 'fa-solid fa-wind', keepOpen = true, onSelect = function()
+            local veh = myVehicle()
+            if not veh then return end
+            windowsDown = not windowsDown
+            if windowsDown then RollDownWindows(veh) else for i = 0, 3 do RollUpWindow(veh, i) end end
+        end },
+        { id = 'veh_door_fl', label = 'Driver door', icon = 'fa-solid fa-door-open', keepOpen = true, onSelect = function() toggleDoor(0) end },
+        { id = 'veh_door_fr', label = 'Passenger door', icon = 'fa-solid fa-door-open', keepOpen = true, onSelect = function() toggleDoor(1) end },
+    } })
+    Arca.AddRadialItem({ id = 'arca_vehicle', label = 'Vehicle', icon = 'fa-solid fa-car', menu = 'arca_vehicle' })
+end)

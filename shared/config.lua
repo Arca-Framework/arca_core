@@ -49,7 +49,7 @@ ArcaConfig.TextUI = {
 }
 
 ArcaConfig.Radial = {
-    Key = 'Z', -- default keybind, players can rebind in GTA settings
+    Key = 'F4', -- default keybind, players can rebind in GTA settings
 }
 
 ArcaConfig.Notify = {
